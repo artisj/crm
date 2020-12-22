@@ -1,10 +1,11 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 
 from .forms import CreateUserForm
 from .models import Customer
 # to send messages to users
 from django.contrib import messages
 
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 def registerPage(request):
@@ -21,6 +22,26 @@ def registerPage(request):
             #send message to form
             messages.success(request,
                              'Account has been created for ' + username)
-            #return HttpResponse('Sucess')
+            redirect('login')
 
     return render(request, 'Accounts/register.html', {'form': form})
+
+def loginPage(request):
+  if request.method == 'POST':
+    #username in get is the value from the form variable name
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+
+    #Django authenticate
+    user = authenticate(request,username=username, password=password)
+
+    if user is not None:
+      login(request, user)
+      return HttpResponse("Logged in")
+    else:
+      messages.info(request, 'Username or password is incorect')
+  return render(request, 'Accounts/login.html', {})
+
+def logoutUser(request):
+  logout(request)
+  return redirect('login')
