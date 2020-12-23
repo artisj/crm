@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 
 from .forms import CreateUserForm
-from .models import Customer
+from .models import Customer, Product, Tag, Order
 # to send messages to users
 from django.contrib import messages
 
@@ -45,3 +45,24 @@ def loginPage(request):
 def logoutUser(request):
   logout(request)
   return redirect('login')
+
+def homePage(request):
+  orders = Order.objects.all()
+  customers = Customer.objects.all()
+
+  total_customers= customers.count()
+  total_orders = orders.count()
+
+  delivered = orders.filter(status='Delivered').count()
+  pending = orders.filter(status='Pending').count()
+
+  context = {'orders':orders, 'customers': customers,
+            'total_orders':total_orders, 'total_customers':total_customers,'delivered':delivered, 'pending':pending}
+
+  return render(request, 'Accounts/dashboard.html', context)
+
+def updateOrder(request):
+  pass
+
+def deleteOrder(request):
+  pass

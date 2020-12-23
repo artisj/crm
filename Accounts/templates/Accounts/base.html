@@ -8,6 +8,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
   
+  <link rel="stylesheet" type="text/css" href="{% static '/css/main.css'%}">
 
 		<style>
 		body,
@@ -68,9 +69,16 @@
 	</style>
 </head>
 <body>
-  {% block body %}
+  {% include 'Accounts/navbar.html' %}
+  
+  <div class="container-fluid>
+{% block body %}
 
   {% endblock %}
+
+  </div>
+  <hr>
+  <h5>footer</h5>
   </body>
 
 </html>
