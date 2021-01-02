@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 
-from .forms import CreateUserForm
+from .forms import CreateUserForm, OrderForm
 from .models import Customer, Product, Tag, Order
 # to send messages to users
 from django.contrib import messages
@@ -61,8 +61,18 @@ def homePage(request):
 
   return render(request, 'Accounts/dashboard.html', context)
 
-def updateOrder(request):
-  pass
+def updateOrder(request, pk):
+  form = OrderForm()
+  order = Order.objects.get(id=pk)
+  
+  if request.method == 'POST':
+    # this creates the instance of form and adds previous data
+    form = OrderForm(request.POST, instance = order)
+    if form.is_valid():
+      form.save()
+      return redirect('/')
+  context ={'form': form}
+  return render(request, 'Accounts/order_form.html', context)
 
 def deleteOrder(request):
   pass

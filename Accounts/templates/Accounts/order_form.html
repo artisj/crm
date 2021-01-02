@@ -1,0 +1,25 @@
+{% extends 'Accounts/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class='row'>
+
+    <div class="col-md-6">
+        <div class="card card-body">
+
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.management_form}}
+                {% for fields in form %}
+                    {{fields}}
+                    <hr>
+                    {% endfor %}
+                    <input type="submit" name="Submit">
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
