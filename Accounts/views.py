@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 
 from .forms import CreateUserForm, OrderForm
 from .models import Customer, Product, Tag, Order
-from .decorators import allowed_users
+from .decorators import *
 # to send messages to users
 from django.contrib import messages
 
@@ -38,7 +38,7 @@ def loginPage(request):
 
     if user is not None:
       login(request, user)
-      return HttpResponse("Logged in")
+      return redirect('home')
     else:
       messages.info(request, 'Username or password is incorect')
   return render(request, 'Accounts/login.html', {})
@@ -47,7 +47,7 @@ def logoutUser(request):
   logout(request)
   return redirect('login')
 
-
+@admin_only
 def homePage(request):
   orders = Order.objects.all()
   customers = Customer.objects.all()

@@ -1,4 +1,4 @@
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, redirect
 
 def allowed_users(allowed_roles=[]):
   def decorator(view_func):
@@ -6,7 +6,7 @@ def allowed_users(allowed_roles=[]):
       group = None
 
       if request.user.groups.exists():
-        group = request.user.groups.all()
+        group = request.user.groups.all()[0].name
         print(group)
       
       if group in allowed_roles:
@@ -17,3 +17,18 @@ def allowed_users(allowed_roles=[]):
     return wrapper_func
 
   return decorator
+
+def admin_only(view_func):
+  def wrapper_func(request, *args, **kwargs):
+    group = None
+
+    if request.user.groups.exists():
+      group = request.user.groups.all()[0].name
+      print(group)
+
+    if group == 'admin':
+        return view_func(request, *args, **kwargs)
+    elif group == 'customer':
+        return redirect('user_page')
+    
+  return wrapper_func
