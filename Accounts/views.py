@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 
 from .forms import CreateUserForm, OrderForm
 from .models import Customer, Product, Tag, Order
+from .decorators import allowed_users
 # to send messages to users
 from django.contrib import messages
 
@@ -46,6 +47,7 @@ def logoutUser(request):
   logout(request)
   return redirect('login')
 
+
 def homePage(request):
   orders = Order.objects.all()
   customers = Customer.objects.all()
@@ -61,6 +63,7 @@ def homePage(request):
 
   return render(request, 'Accounts/dashboard.html', context)
 
+@allowed_users(allowed_roles=['customer'])
 def userPage(request):
 	orders = request.user.customer.order_set.all() #orders object of particular customer
 	total_orders = orders.count()
