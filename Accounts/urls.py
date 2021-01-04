@@ -25,5 +25,5 @@ urlpatterns = [
     path('', views.homePage, name='home'),
     path('delete_order/<str:pk>/', views.deleteOrder, name='delete_order'),
     path('update_order/<str:pk>/', views.updateOrder, name='update_order'),
-
+    path("user/", views.userPage, name="user_page"),
 ]

@@ -61,6 +61,18 @@ def homePage(request):
 
   return render(request, 'Accounts/dashboard.html', context)
 
+def userPage(request):
+	orders = request.user.customer.order_set.all() #orders object of particular customer
+	total_orders = orders.count()
+	delivered = orders.filter(status="delivered").count()
+	pending = orders.filter(status="pending").count()
+
+	context = {'orders': orders, 'total_orders': total_orders,
+				'delivered': delivered, 'pending': pending
+					}
+
+	return render(request, "Accounts/user.html", context)
+
 def updateOrder(request, pk):
   form = OrderForm()
   order = Order.objects.get(id=pk)
